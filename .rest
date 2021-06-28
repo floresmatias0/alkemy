@@ -1,0 +1,26 @@
+GET http://localhost:3001/operations/
+
+###
+POST http://localhost:3001/operations/create
+Content-Type: application/json
+
+{
+    "concept": "cuota",
+    "mount": 100,
+    "date": "10/10/1993",
+    "type": "entry"
+}
+
+###
+PUT http://localhost:3001/operations/update/3
+Content-Type: application/json
+
+{
+    "concept": "cuotita",
+    "mount": 100,
+    "date": "10/10/1993",
+    "type": "entry"
+}
+
+###
+DELETE http://localhost:3001/operations/delete/2

@@ -15,6 +15,10 @@ const Navbar = () => {
                 </li>
                 <li> <NavLink activeClassName={styles.active} to="/operations"> Operations </NavLink>  </li>
             </ul>
+            <ul>
+                <li><NavLink activeClassName={styles.active} to="/register"> Register </NavLink></li>
+                <li> Login </li>
+            </ul>
         </div>
     )
 }

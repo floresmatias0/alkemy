@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Navbar from './components/Navbar';
 import Operations from './pages/Operations';
+import Register from './pages/Register';
 import './App.css';
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
       <Route path="/" component={Navbar}/>
       <Route exact path="/" component={Home}/> 
       <Route exact path="/operations" component={Operations}/>
+      <Route exact path="/register" component={Register}/>
     </>
 
   );

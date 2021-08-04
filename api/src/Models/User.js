@@ -10,6 +10,7 @@ module.exports = (sequelize) => {
         },
         name: {
             type: DataTypes.STRING,
+
             allowNull: false,
         },
         surname: {
@@ -20,5 +21,9 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        password_virtual: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        }
     });
 };

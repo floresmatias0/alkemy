@@ -1,16 +1,11 @@
 const server = require('express').Router();
-const { Operation } = require('../../db.js');
+const { createOperation } = require('../../Controllers/operations/post.operations')
 
 
 server.post('/create', async(req, res, next) => { 
-    let { concept, mount, date, type } = req.body
-    console.log(concept)
-    await Operation.create({
-        concept,
-        mount,
-        date,
-        type
-    })
+    let { concept, mount, type } = req.body
+    
+    createOperation(concept,mount,type)
     .then(result => {
         res.status(200).json(result)
     })

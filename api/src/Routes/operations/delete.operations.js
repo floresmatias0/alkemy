@@ -1,28 +1,13 @@
 const server = require('express').Router();
-const { Operation } = require('../../db.js');
+const { deleteOperationById } = require('../../Controllers/operations/delete.operations');
 
 
-server.delete('/delete/:operationId', async(req, res, next) => { 
-    let { operationId } = req.params
+server.delete('/delete/:idOperation', async(req, res, next) => { 
+    let { idOperation } = req.params
     
-    Operation.findOne({
-        where:{
-            id: operationId
-        }
-    })
-    .then((op) => {
-        if(op !== null){
-            Operation.destroy({
-                where:{
-                    id: operationId
-                }
-            })
-            .then(() => res.status(202).send("operation delete"))
-        }else{
-            res.status(202).send("sorry doesn't find operation")
-        }
-    }) 
-    .catch(error => res.status(400).send(error))
+    deleteOperationById(idOperation)
+    .then(() => res.status(202).send("operation delete successfully")) 
+    .catch(error => res.status(402).send(error.message))
 });
 
 module.exports = server;

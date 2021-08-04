@@ -7,20 +7,49 @@ Content-Type: application/json
 {
     "concept": "cuota",
     "mount": 100,
-    "date": "10/10/1993",
-    "type": "entry"
+    "type": "ingress"
 }
 
 ###
-PUT http://localhost:3001/operations/update/3
+GET http://localhost:3001/operations/1
+
+###
+PUT http://localhost:3001/operations/update/1
 Content-Type: application/json
 
 {
-    "concept": "cuotita",
-    "mount": 100,
-    "date": "10/10/1993",
-    "type": "entry"
+    "mount": "15000"
 }
 
 ###
-DELETE http://localhost:3001/operations/delete/2
+DELETE http://localhost:3001/operations/delete/1
+
+
+### USERS ###
+###
+POST http://localhost:3001/users/create
+Content-Type: application/json
+
+{
+    "name": "Cuota",
+    "surname": "Peralta",
+    "email": "ingress@gmail.com",
+    "password": "password",
+    "password_virtual": "password"
+}
+
+###
+GET http://localhost:3001/users/
+
+###
+PUT http://localhost:3001/users/update/2
+Content-Type: application/json
+
+{
+    "name": "Leandro",
+    "email": "alkemy@gmail.com"
+}
+
+###
+DELETE http://localhost:3001/users/delete/2
+

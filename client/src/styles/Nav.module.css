@@ -1,0 +1,16 @@
+.Nav{
+    width: 100%;
+}
+.Nav ul{
+    padding: 0;    
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    align-self: center;
+}
+.Nav ul li{
+    width: 200px;
+}
+.active{
+    background-color: red;
+}

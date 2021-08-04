@@ -1,12 +1,16 @@
 import React from 'react';
-import Home from './components/Home'
 import { Route } from 'react-router-dom'
+import Home from './pages/Home'
+import Navbar from './components/Navbar';
+import Operations from './pages/Operations';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <>
-      <Route path="/" component={Home}/> 
+      <Route path="/" component={Navbar}/>
+      <Route exact path="/" component={Home}/> 
+      <Route exact path="/operations" component={Operations}/>
     </>
 
   );

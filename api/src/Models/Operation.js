@@ -12,13 +12,9 @@ module.exports = (sequelize) => {
             type: DataTypes.BIGINT,
             allowNull: false,
         },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
         type: {
-            type: DataTypes.ENUM("entry", "egress"),
-            defaultValue: "entry"
+            type: DataTypes.ENUM("ingress", "egress"),
+            defaultValue: "ingress"
         },
     });
 };

@@ -7,7 +7,8 @@ Content-Type: application/json
 {
     "concept": "cuota",
     "mount": 100,
-    "type": "ingress"
+    "type": "ingress",
+    "idUser": 3
 }
 
 ###
@@ -39,7 +40,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/users/
+GET http://localhost:3001/users/3
 
 ###
 PUT http://localhost:3001/users/update/2
@@ -53,3 +54,11 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3001/users/delete/2
 
+###
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+{
+    "email": "santerbas@mail.com",
+    "password": "hola"
+}

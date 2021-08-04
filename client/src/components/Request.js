@@ -1,8 +1,10 @@
 import React,{ useState } from 'react';
 import styles from "../styles/Request.module.css";
+import Swal from 'sweetalert2';
 
 const Request = () => {
     
+    let logged = JSON.parse(localStorage.getItem("user"));
     const [result, setResult] = useState([])
     const [input, setInput] = useState({
         concept: "",
@@ -10,20 +12,26 @@ const Request = () => {
         type:""
     })
 
-    const alertContents = () => {
+    const responseCreate = () => {
 
         if (http_request.readyState === 4) {
             if (http_request.status === 200) {
-                console.log(JSON.parse(http_request.response))
+                let response = JSON.parse(http_request.response)
+                setResult(result.concat(response))
+
+                Swal.fire({
+                    icon:'success',
+                    title: 'new operation create successfully'
+                })
             } else {
                 alert("Hubo un problema en la peticion")
             }
         }
-
     }
     
     var http_request = false;
-    function makeRequestPost(url) {
+
+    function createOperation(url) {
 
         http_request = false;
 
@@ -38,11 +46,41 @@ const Request = () => {
             alert('Falla :( No es posible crear una instancia XMLHTTP');
             return false;
         }
-        http_request.onreadystatechange = alertContents;
-        http_request.open('POST', url, true);
+        http_request.onreadystatechange = responseCreate;
+        http_request.open('POST', url, false);
         http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`concept=${input.concept}&mount=${input.mount}&type=${input.type}`);
+        http_request.send(`concept=${input.concept}&mount=${input.mount}&type=${input.type}&idUser=${logged.id}`);
+    }
 
+    function getUserById(url) {
+        http_request = false;
+
+        if (window.XMLHttpRequest) { // Mozilla, Safari,...
+            http_request = new XMLHttpRequest();
+            if (http_request.overrideMimeType) {
+                http_request.overrideMimeType('text/xml');
+            }
+        } 
+
+        if (!http_request) {
+            alert('Falla :( No es posible crear una instancia XMLHTTP');
+            return false;
+        }
+        http_request.onreadystatechange = showUser;
+        http_request.open('GET', url, false);
+        http_request.send();
+
+    }
+
+    function showUser() {
+        if (http_request.readyState === 4) {
+            if (http_request.status === 201) {
+                localStorage.removeItem("user");
+                localStorage.setItem("user", http_request.response)
+            } else {
+                alert('Hubo problemas con la petición.');
+            }
+        }
     }
 
     const handleChange = (e) => {
@@ -54,10 +92,24 @@ const Request = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        makeRequestPost('http://localhost:3001/operations/create')
-        console.log(result)
+        if(logged){
+            createOperation('http://localhost:3001/operations/create')
+            getUserById(`http://localhost:3001/users/${logged.id}`)
+        }else{
+            Swal.fire({
+                icon:'error',
+                title: 'something went wrong',
+                text: 'please login for create operation'
+            })
+        } 
     }
 
+    const getDate = (time) => {
+        let d = new Date(time);
+        let date = d.toDateString();
+
+        return date
+    } 
     return (
         <div className={styles.container}>
             <div className={styles.contentForm}>
@@ -82,6 +134,22 @@ const Request = () => {
                     <button className={styles.button} type="submit">send</button>
                 </form>
             </div>
+            {result && result.length > 0 ? (
+                <div className={styles.contentOperations}>
+                    {result.map((elem,i) => {
+                        return (
+                            <ul key={i}>
+                                <li>{elem.concept}</li>
+                                <li>{elem.mount}</li>
+                                <li>{elem.type}</li>
+                                <li>{getDate(elem.createdAt)}</li>
+                            </ul>
+                        )
+                    })}
+                </div>
+            ) : (
+                <></>
+            )}
         </div>
     )
 }

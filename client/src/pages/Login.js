@@ -1,34 +1,59 @@
-import React,{ useState } from 'react';
-import { Link } from 'react-router-dom';
+import React,{ useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import logoAlkemy from '../assets/images/logo_labs.png';
 import styles from '../styles/Login.module.css';
 import Swal from 'sweetalert2';
 
 const Login = () => {
 
+    let logged = JSON.parse(localStorage.getItem("user"));
+
+    useEffect(() => {
+        if(logged){
+            history.push("/")
+        }// eslint-disable-next-line
+    },[])
+
+    const history = useHistory();
+
     const [errors, setErrors] = useState({})
     const [user, setUser] = useState({
         email:"",
-        password:"",
-        password_virtual:""
+        password:""
     })
 
-    const alertContents2 = () => {
+    const alertContents = () => {
 
         if (http_request.readyState === 4) {
             if (http_request.status === 201) {
-                alert(http_request.response);
+                // let response = JSON.parse(http_request.response);
+                localStorage.setItem("user", http_request.response)
+                Swal.fire({
+                    icon:'success',
+                    title: 'Welcome',
+                    confirmButtonText: 'Cool'
+                })
+                .then(result => {
+                    if(result.isConfirmed || result.isDismissed){
+                        history.push("/")
+                    }
+                })
+            } else if (http_request.status === 402) {
+                Swal.fire({
+                    icon:'error',
+                    title: 'something went wrong',
+                    text: 'check email or password'
+                })
             } else {
                 alert("Hubo un problema en la peticion")
             }
         }else{
             console.log(http_request.readyState)
         }
-
     }
     
     var http_request = false;
-    const postRegister = (url) => {
+    const postLogin = (url) => {
 
         http_request = false;
 
@@ -43,10 +68,10 @@ const Login = () => {
             alert('Falla :( No es posible crear una instancia XMLHTTP');
             return false;
         }
-        http_request.onreadystatechange = alertContents2;
+        http_request.onreadystatechange = alertContents;
         http_request.open('POST', url, true);
         http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
+        http_request.send(`email=${user.email}&password=${user.password}`);
 
     }
 
@@ -70,22 +95,19 @@ const Login = () => {
         } else if (!/\S+@\S+/.test(user.email)) {
              errors.email = 'email is invalid';
         }
-        if(user.password && user.password_virtual && user.password !== user.password_virtual){
-            errors.password_virtual = 'should match the previous password'
-        }
         return errors;
     };
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if(!user.name || !user.surname || !user.password_virtual || !user.password || !user.email){
+        if(!user.password || !user.email){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'complete the form'
             })
         }else{
-           postRegister('http://localhost:3001/users/create');
+           postLogin('http://localhost:3001/users/login');
         }
     }
 
@@ -116,19 +138,6 @@ const Login = () => {
                         placeholder="Password"
                         autoComplete="new-password"
                     />
-                    <input type='password' 
-                        onChange={handleChange}
-                        name="password_virtual"
-                        value={user.password_virtual}
-                        placeholder="Confirm password"
-                        autoComplete="new-password"
-                    />
-                    {errors.password_virtual && errors.password_virtual === 'should match the previous password'
-                    ?(
-                        <p className={`${styles.error} animate__animated animate__shakeX`}>{errors.password_virtual}</p> 
-                    ):(
-                        <></>
-                    )}
                     <button type='submit' className={styles.button}> Sign in </button>
                 </form>
                 <h3>Don't have an account? <Link to="/register">Sign up</Link></h3>

@@ -1,12 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-// const passportJWT = require('passport-jwt');
-// const JWTStrategy =  passportJWT.Strategy;
-// const ExtractJWT = passportJWT.ExtractJwt
 const { User } = require("../db");
 const bcrypt = require('bcrypt');
 
-// const {ACCESS_TOKEN_SECRET} = process.env;
 
 passport.use(new LocalStrategy({
   usernameField: 'email',
@@ -39,17 +35,6 @@ passport.use(new LocalStrategy({
   });
   }
 ));
-
-// passport.use('jwt',new JWTStrategy(
-//   { 
-//     secretOrKey: ACCESS_TOKEN_SECRET,
-//     jwtFromRequest: ExtractJWT.fromUrlQueryParameter('secret_token')
-//   },
-//   function(payload, done){
-//       done(null, payload);
-//   }
-// ));
-
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);

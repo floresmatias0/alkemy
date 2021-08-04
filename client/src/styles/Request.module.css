@@ -1,6 +1,7 @@
 .container{
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     text-align: center;
     margin-top: 1em;
@@ -52,4 +53,23 @@
     margin-left: auto;
     margin-right: auto;
     cursor: pointer;
+}
+.contentOperations{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.contentOperations ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    border: 1px solid gray;
+}
+.contentOperations ul li{
+    width: 25%;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    align-self: center;
 }

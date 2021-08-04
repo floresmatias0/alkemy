@@ -1,5 +1,6 @@
 const server = require('express').Router();
-const { createUser } = require('../../Controllers/user/post.user')
+const { createUser } = require('../../Controllers/user/post.user');
+const passport = require('../../Middlewares/passport.middleware');
 
 
 server.post('/create', (req, res, next) => { 
@@ -14,5 +15,21 @@ server.post('/create', (req, res, next) => {
         res.status(400).send(error)
     })
 });
+
+server.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+  
+      if(info === "Password Invalid"){
+        return res.status(402).send("Password Invalid try again")
+      }
+      if(info === "Email Invalid"){
+        return res.status(402).send("Email Invalid try again")
+      }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        return res.status(201).json(user);
+      });
+    })(req, res, next)
+  });
 
 module.exports = server;

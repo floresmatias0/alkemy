@@ -1,21 +1,25 @@
 import React,{ useState, useEffect } from "react";
 import styles from '../styles/Home.module.css';
+import Swal from 'sweetalert2';
+import iconDelete from '../assets/images/delete.png';
 
 const Home = () => {
 
+    let logged = JSON.parse(localStorage.getItem("user"));
     const [arr, setArr] = useState("")
     const [loading, setLoading] = useState(true)
 
     useEffect(()=>{
        const callAll = () => {
-        makeRequest('http://localhost:3001/operations')
+            getOperations('http://localhost:3001/operations')
        } 
-       callAll()
+
+       callAll() // eslint-disable-next-line
     },[])
 
     var http_request = false;
 
-    function makeRequest(url) {
+    function getOperations(url) {
         http_request = false;
 
         if (window.XMLHttpRequest) { // Mozilla, Safari,...
@@ -29,10 +33,24 @@ const Home = () => {
             alert('Falla :( No es posible crear una instancia XMLHTTP');
             return false;
         }
-        http_request.onreadystatechange = alertContentsV2;
+        http_request.onreadystatechange = showOperations;
         http_request.open('GET', url, true);
         http_request.send();
 
+    }
+
+    function showOperations() {
+        setLoading(false)
+        if (http_request.readyState === 4) {
+            if (http_request.status === 200) {
+                let response = JSON.parse(http_request.response) 
+                setArr(response);
+                setLoading(true);
+            } else {
+                alert('Hubo problemas con la petición.');
+                setLoading(true);
+            }
+        }
     }
 
     function deleteOperation(url) {
@@ -49,32 +67,27 @@ const Home = () => {
             alert('Falla :( No es posible crear una instancia XMLHTTP');
             return false;
         }
-        http_request.onreadystatechange = alertContentsV3;
+        http_request.onreadystatechange = responseDelete;
         http_request.open('DELETE', url, true);
         http_request.send();
 
     }
-    function alertContentsV3() {
+
+    function responseDelete() {
         if (http_request.readyState === 4) {
             if (http_request.status === 202) {
-                alert(http_request.response) 
-                window.location.reload()
+                Swal.fire({
+                    icon: 'success',
+                    title: `${http_request.response}`,
+                    confirmButtonText: 'Cool'
+                }) 
+                .then(result => {
+                    if(result.isConfirmed || result.isDismissed){
+                        window.location.reload()
+                    }
+                }) 
             } else {
                 alert('Hubo problemas con la petición.');
-                setLoading(true);
-            }
-        }
-    }
-    function alertContentsV2() {
-        setLoading(false)
-        if (http_request.readyState === 4) {
-            if (http_request.status === 200) {
-                let response = JSON.parse(http_request.response) 
-                setArr(response);
-                setLoading(true);
-            } else {
-                alert('Hubo problemas con la petición.');
-                setLoading(true);
             }
         }
     }
@@ -85,6 +98,35 @@ const Home = () => {
 
         return date
     } 
+
+    const verificationUser = (url) => {
+        if(logged){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+              }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteOperation(url)
+                    Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                    )
+                }
+              })  
+        }else{
+            Swal.fire({
+                icon:'error',
+                title: 'something went wrong',
+                text: 'please login for delete operation'
+            })
+        }
+    }
     return(
         <div className={styles.container}>
             <h1>HOME</h1>
@@ -104,7 +146,11 @@ const Home = () => {
                                 <li>{elem.mount}</li>
                                 <li>{elem.type}</li>
                                 <li>{getDate(elem.createdAt)}</li>
-                                <li onClick={() => deleteOperation(`http://localhost:3001/operations/delete/${elem.id}`)}>delete</li>
+                                <li 
+                                    className={styles.delete}
+                                    onClick={() => verificationUser(`http://localhost:3001/operations/delete/${elem.id}`)}>
+                                        <img src={iconDelete} alt="iconDelete" width="18px"/>
+                                </li>
                             </ul>
                         )
                     })}

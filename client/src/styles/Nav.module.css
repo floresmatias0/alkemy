@@ -13,6 +13,14 @@
     align-self: center;
     text-align: center;
 }
+.user{
+    justify-content: flex-end;
+}
+.image{
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
 .Nav ul a{
     text-decoration: none;
     color: gray;
@@ -29,6 +37,6 @@
 .Nav ul li:hover, .Nav ul a:hover{
     color:#F1C385;
 }
-.active{
-    text-decoration: #F1C385;
+.active {
+    color:  #F1C385 !important;
 }

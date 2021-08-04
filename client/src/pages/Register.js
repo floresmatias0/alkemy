@@ -1,11 +1,11 @@
 import React,{ useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import logoAlkemy from '../assets/images/logo_labs.png';
 import styles from '../styles/Register.module.css';
 import Swal from 'sweetalert2';
 
 const Register = () => {
-
+    const history = useHistory();
     const [errors, setErrors] = useState({})
     const [user, setUser] = useState({
         name:"",
@@ -19,12 +19,20 @@ const Register = () => {
 
         if (http_request.readyState === 4) {
             if (http_request.status === 201) {
-                alert(http_request.response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Great!',
+                    text: 'try log in now',
+                    confirmButtonText: 'Cool'
+                })
+                .then(result => {
+                    if(result.isConfirmed || result.isDismissed){
+                        history.push("/login")
+                    }
+                })
             } else {
                 alert("Hubo un problema en la peticion")
             }
-        }else{
-            console.log(http_request.readyState)
         }
 
     }
@@ -34,7 +42,7 @@ const Register = () => {
 
         http_request = false;
 
-        if (window.XMLHttpRequest) { // Mozilla, Safari,...
+        if (window.XMLHttpRequest) { 
             http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType) {
                 http_request.overrideMimeType('text/xml');

@@ -1,4 +1,4 @@
-const { User } = require('../../db');
+const { User,Operation } = require('../../db');
 
 module.exports = {
 
@@ -7,7 +7,11 @@ module.exports = {
         return await User.findOne({
             where:{
                 id: idUser
-            }
+            },
+            include: [{
+                model: Operation, as: 'operations',
+                attributes: ["id","concept","mount","type","createdAt"]
+            }]
         })
     }
 }

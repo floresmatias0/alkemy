@@ -3,10 +3,10 @@ const { createOperation } = require('../../Controllers/operations/post.operation
 
 
 server.post('/create', async(req, res, next) => { 
-    let { concept, mount, type } = req.body
+    let { concept, mount, type ,idUser} = req.body
     
-    createOperation(concept,mount,type)
-    .then(result => {
+    createOperation(concept,mount,type,idUser)
+    .then(result => {    
         res.status(200).json(result)
     })
     .catch(error => {

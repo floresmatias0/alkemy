@@ -1,12 +1,13 @@
-import React from 'react'
-import Request from '../components/Request'
+import React from 'react';
+import Request from '../components/Request';
+import styles from '../styles/Operations.module.css';
 
 const Operations = () => {
     return (
-        <>
-            <h1>Operations</h1>
+        <div className={styles.container}>
+            <h1>OPERATIONS</h1>
             <Request/>
-        </>
+        </div>
     )
 }
 

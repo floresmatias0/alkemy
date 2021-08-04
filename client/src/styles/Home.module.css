@@ -1,0 +1,31 @@
+.container{
+    width: 100%;
+    text-align: center;
+}
+.container h1{
+    margin: 0;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 400 !important;
+    color: #404040;
+}
+.contentOperations{
+    width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.contentOperations ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    border: 1px solid gray;
+}
+.contentOperations ul li{
+    width: 20%;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    align-self: center;
+}

@@ -1,15 +1,13 @@
 import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import logoAlkemy from '../assets/images/logo_labs.png';
-import styles from '../styles/Register.module.css';
+import styles from '../styles/Login.module.css';
 import Swal from 'sweetalert2';
 
-const Register = () => {
+const Login = () => {
 
     const [errors, setErrors] = useState({})
     const [user, setUser] = useState({
-        name:"",
-        surname:"",
         email:"",
         password:"",
         password_virtual:""
@@ -48,7 +46,7 @@ const Register = () => {
         http_request.onreadystatechange = alertContents2;
         http_request.open('POST', url, true);
         http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`name=${user.name}&surname=${user.surname}&email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
+        http_request.send(`email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
 
     }
 
@@ -67,18 +65,12 @@ const Register = () => {
 
     const validate = (user) => {
         let errors = {};
-        if (!user.name) {
-            errors.name = 'name is required';
-        } 
-        if (!user.surname) {
-            errors.surname = 'surname is required';
-        } 
-        if (!user.email) {
+        if(!user.email) {
             errors.email = 'email is required';
         } else if (!/\S+@\S+/.test(user.email)) {
              errors.email = 'email is invalid';
         }
-        if (user.password && user.password_virtual && user.password !== user.password_virtual){
+        if(user.password && user.password_virtual && user.password !== user.password_virtual){
             errors.password_virtual = 'should match the previous password'
         }
         return errors;
@@ -104,32 +96,6 @@ const Register = () => {
                     <img src={logoAlkemy} alt="logo-alkemy"/>
                 </div>
                 <form onSubmit={handleSubmit} className={styles.form}>
-                    <input type='text' 
-                        onChange={handleChange}
-                        name="name"
-                        value={user.name}
-                        placeholder="Name"
-                        autoComplete="new-password"
-                    />
-                    {errors.name && errors.name === 'name is required'
-                    ?(
-                        <p className={`${styles.error} animate__animated animate__shakeX`}>{errors.name}</p> 
-                    ):(
-                        <></>
-                    )}
-                    <input type='text' 
-                        onChange={handleChange}
-                        name="surname"
-                        value={user.surname}
-                        placeholder="Surname"
-                        autoComplete="new-password"
-                    />
-                    {errors.surname && errors.surname === 'surname is required' 
-                    ?(
-                        <p className={`${styles.error} animate__animated animate__shakeX`}>{errors.surname}</p> 
-                    ):(
-                        <></>
-                    )}
                     <input type='email' 
                         onChange={handleChange}
                         name="email"
@@ -163,12 +129,12 @@ const Register = () => {
                     ):(
                         <></>
                     )}
-                    <button type='submit' className={styles.button}> Register </button>
+                    <button type='submit' className={styles.button}> Sign in </button>
                 </form>
-                <h3>Are you ready account? <Link to="/login">Sign in</Link></h3>
+                <h3>Don't have an account? <Link to="/register">Sign up</Link></h3>
             </div>
         </div>
     )      
 }
 
-export default Register;
+export default Login;

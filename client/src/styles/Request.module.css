@@ -2,16 +2,11 @@
     width: 100%;
     display: flex;
     justify-content: center;
-}
-.contentInfo{
-    width: 350px;
     text-align: center;
+    margin-top: 1em;
 }
-.contentImage{
-    width: 100%;
-}
-.contentImage img{
-    width: 220px;
+.contentForm{
+    width: 350px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -20,7 +15,7 @@
     display: flex;
     flex-direction: column;
 }
-.form input{
+.form input,.form select{
     border: none;
     border-bottom: 1px solid gray;
     font-family: 'Mulish', sans-serif;
@@ -57,9 +52,4 @@
     margin-left: auto;
     margin-right: auto;
     cursor: pointer;
-}
-.container h3{
-    font-family: 'Mulish', sans-serif;
-    font-size: 16px; 
-    font-weight: 300 !important;
 }

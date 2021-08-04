@@ -1,12 +1,12 @@
 import React,{ useState } from 'react';
-import styles from "../styles/Operations.module.css"
+import styles from "../styles/Request.module.css";
 
 const Request = () => {
     
+    const [result, setResult] = useState([])
     const [input, setInput] = useState({
         concept: "",
         mount: "",
-        date: "",
         type:""
     })
 
@@ -14,9 +14,9 @@ const Request = () => {
 
         if (http_request.readyState === 4) {
             if (http_request.status === 200) {
-                alert(http_request.response);
+                console.log(JSON.parse(http_request.response))
             } else {
-                alert('Hubo problemas con la petición.');
+                alert("Hubo un problema en la peticion")
             }
         }
 
@@ -31,7 +31,6 @@ const Request = () => {
             http_request = new XMLHttpRequest();
             if (http_request.overrideMimeType) {
                 http_request.overrideMimeType('text/xml');
-                // Ver nota sobre esta linea al final
             }
         } 
 
@@ -56,31 +55,31 @@ const Request = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         makeRequestPost('http://localhost:3001/operations/create')
+        console.log(result)
     }
 
     return (
         <div className={styles.container}>
-            <h1>New </h1>
             <div className={styles.contentForm}>
                 <form className={styles.form} onSubmit={handleSubmit}>
-                    <label>concept</label>
                     <input
                      type="text"
                      name="concept"
                      onChange={handleChange}
+                     placeholder="concept"
                      />
-                    <label>mount</label>
                     <input
                      type="number"
                      name="mount"
                      onChange={handleChange}
+                     placeholder="mount"
                      />
-                    <label>type</label>
-                    <select name="type" onChange={handleChange}>
-                        <option value="ingress">ingress</option>
+                    <select name="type" placeholder="type" onChange={handleChange}>
+                        <option value=""  hidden>Choose here</option>
+                        <option defaultValue="ingress">ingress</option>
                         <option value="egress">egress</option>
                     </select>
-                    <button type="submit">send</button>
+                    <button className={styles.button} type="submit">send</button>
                 </form>
             </div>
         </div>

@@ -10,14 +10,14 @@ const Navbar = () => {
             <ul>
                 <li> 
                     <NavLink activeClassName="active" to="/">
-                      <img src={alkemyLogo} alt="logo" width="100%"/>  
+                      <img src={alkemyLogo} alt="logo" width="180px"/>  
                     </NavLink>
                 </li>
                 <li> <NavLink activeClassName={styles.active} to="/operations"> Operations </NavLink>  </li>
             </ul>
             <ul>
                 <li><NavLink activeClassName={styles.active} to="/register"> Register </NavLink></li>
-                <li> Login </li>
+                <li><NavLink activeClassName={styles.active} to="/login"> Login </NavLink></li>
             </ul>
         </div>
     )

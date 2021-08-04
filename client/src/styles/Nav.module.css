@@ -1,16 +1,34 @@
 .Nav{
     width: 100%;
+    display: flex;
+    flex-direction: row;
+    background-color: #001529;
 }
 .Nav ul{
+    width: 50%;
     padding: 0;    
     display: flex;
     flex-direction: row;
     list-style: none;
     align-self: center;
+    text-align: center;
+}
+.Nav ul a{
+    text-decoration: none;
+    color: gray;
+    font-weight: 600 !important;
 }
 .Nav ul li{
-    width: 200px;
+    width: 50%;
+    align-self: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    color: gray;
+    font-weight: 600 !important;
+}
+.Nav ul li:hover, .Nav ul a:hover{
+    color:#F1C385;
 }
 .active{
-    background-color: red;
+    text-decoration: #F1C385;
 }

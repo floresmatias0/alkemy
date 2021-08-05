@@ -4,8 +4,10 @@
     flex-direction: row;
     background-color: #001529;
 }
-.Nav ul{
+.contentNav{
     width: 50%;
+}
+.contentNav, .contentUser, .user{
     padding: 0;    
     display: flex;
     flex-direction: row;
@@ -13,26 +15,49 @@
     align-self: center;
     text-align: center;
 }
+.contentUser{
+    width: 66%;
+}
 .user{
+    width: 33%;
+}
+.user li{
+    display: flex;
     justify-content: flex-end;
 }
-.image{
+.user li a{
+    margin-right: 1em;
+}
+.imageUser{
+    display: flex;
+    justify-content: flex-start;
+    cursor: pointer;
+}
+.imageNav{
     display: flex;
     justify-content: center;
     cursor: pointer;
+}
+.imageUser img{
+    margin-left: 1em;
 }
 .Nav ul a{
     text-decoration: none;
     color: gray;
     font-weight: 600 !important;
 }
-.Nav ul li{
-    width: 50%;
+.contentNav li, .contentUser li, .user li {
     align-self: center;
     font-family: 'Mulish', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     color: gray;
     font-weight: 600 !important;
+}
+.contentNav li, .contentUser li{
+    width: 50%;
+}
+.user li {
+    width: 100%;
 }
 .Nav ul li:hover, .Nav ul a:hover{
     color:#F1C385;

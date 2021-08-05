@@ -136,9 +136,15 @@ const Request = () => {
             </div>
             {result && result.length > 0 ? (
                 <div className={styles.contentOperations}>
+                    <ul className={styles.headersTable}>
+                        <li>concept</li>
+                        <li>mount</li>
+                        <li>type</li>
+                        <li>date</li>
+                    </ul>
                     {result.map((elem,i) => {
                         return (
-                            <ul key={i}>
+                            <ul key={i} className={elem.type === 'ingress' ? styles.color : styles.withoutColor }>
                                 <li>{elem.concept}</li>
                                 <li>{elem.mount}</li>
                                 <li>{elem.type}</li>

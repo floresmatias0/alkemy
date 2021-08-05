@@ -40,7 +40,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3001/users/3
+GET http://localhost:3001/users/
 
 ###
 PUT http://localhost:3001/users/update/2

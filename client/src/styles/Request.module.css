@@ -50,6 +50,7 @@
     outline: none;
     background-color: #52C0F7;
     margin-top: 1em;
+    margin-bottom: 1em;
     margin-left: auto;
     margin-right: auto;
     cursor: pointer;
@@ -59,19 +60,34 @@
     margin-left: auto;
     margin-right: auto;
 }
-.contentOperations ul{
+.withoutColor, .color, .headersTable{
     display: flex;
     flex-direction: row;
     justify-content: center;
     list-style: none;
-    padding: 0;
-    border: 1px solid gray;
+    padding: 0.5em;
+    margin: 0;
 }
-.contentOperations ul li{
+.headersTable{
+    background-color: #001529;
+}
+.color{
+   background-color: #52C0F7; 
+}
+.withoutColor{
+    background-color: #FFFFFF; 
+}
+.withoutColor li, .color li, .headersTable li{
     width: 25%;
     font-family: 'Mulish', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     align-self: center;
+}
+.color li, .headersTable li{
+    color: #FFFFFF;
+}
+.headersTable li{
+    font-weight: 500 !important;
 }
 @media screen and (max-width:600px){
     .contentOperations{

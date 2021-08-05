@@ -26,7 +26,6 @@ const Login = () => {
 
         if (http_request.readyState === 4) {
             if (http_request.status === 201) {
-                // let response = JSON.parse(http_request.response);
                 localStorage.setItem("user", http_request.response)
                 Swal.fire({
                     icon:'success',
@@ -72,7 +71,6 @@ const Login = () => {
         http_request.open('POST', url, true);
         http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         http_request.send(`email=${user.email}&password=${user.password}`);
-
     }
 
     const handleChange = (e) => {

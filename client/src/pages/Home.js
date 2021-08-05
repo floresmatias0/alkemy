@@ -2,20 +2,37 @@ import React,{ useState, useEffect } from "react";
 import styles from '../styles/Home.module.css';
 import Swal from 'sweetalert2';
 import iconDelete from '../assets/images/delete.png';
+import iconEdit from '../assets/images/edit.png';
 
 const Home = () => {
 
     let logged = JSON.parse(localStorage.getItem("user"));
-    const [arr, setArr] = useState("")
-    const [loading, setLoading] = useState(true)
+    const [arr, setArr] = useState("");
+    const [filtered, setFiltered] = useState("");
+    const [balance, setBalance] = useState("");
 
     useEffect(()=>{
        const callAll = () => {
             getOperations('http://localhost:3001/operations')
        } 
-
-       callAll() // eslint-disable-next-line
+       callAll()
+        // eslint-disable-next-line
     },[])
+
+    const currentBalance = () => {
+        let ingress = 0
+        let egress = 0
+        for(let i = 0; i < arr.length; i++){
+            if(arr[i].type === "ingress"){
+                ingress += parseInt(arr[i].mount)
+            }else if(arr[i].type === "egress"){
+                egress += parseInt(arr[i].mount)
+            }
+        }
+
+        let rest = ingress - egress
+        setBalance(rest)
+    }
 
     var http_request = false;
 
@@ -40,15 +57,13 @@ const Home = () => {
     }
 
     function showOperations() {
-        setLoading(false)
         if (http_request.readyState === 4) {
             if (http_request.status === 200) {
                 let response = JSON.parse(http_request.response) 
+                setFiltered(response)
                 setArr(response);
-                setLoading(true);
             } else {
                 alert('Hubo problemas con la petición.');
-                setLoading(true);
             }
         }
     }
@@ -70,7 +85,6 @@ const Home = () => {
         http_request.onreadystatechange = responseDelete;
         http_request.open('DELETE', url, true);
         http_request.send();
-
     }
 
     function responseDelete() {
@@ -92,6 +106,39 @@ const Home = () => {
         }
     }
 
+    function editOperation(url,concept,mount) {
+        http_request = false;
+
+        if (window.XMLHttpRequest) { // Mozilla, Safari,...
+            http_request = new XMLHttpRequest();
+            if (http_request.overrideMimeType) {
+                http_request.overrideMimeType('text/xml');
+            }
+        } 
+
+        if (!http_request) {
+            alert('Falla :( No es posible crear una instancia XMLHTTP');
+            return false;
+        }
+        http_request.onreadystatechange = responseEdit;
+        http_request.open('PUT', url, true);
+        http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        http_request.send(`concept=${concept}&mount=${mount}`);
+    }
+
+    function responseEdit() {
+        if (http_request.readyState === 4) {
+            if (http_request.status === 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'edit successfully'
+                }) 
+            } else {
+                alert('Hubo problemas con la petición.');
+            }
+        }
+    }
+
     const getDate = (time) => {
         let d = new Date(time);
         let date = d.toDateString();
@@ -99,7 +146,7 @@ const Home = () => {
         return date
     } 
 
-    const verificationUser = (url) => {
+    const alertDelete = (url) => {
         if(logged){
             Swal.fire({
                 title: 'Are you sure?',
@@ -127,34 +174,117 @@ const Home = () => {
             })
         }
     }
+
+    const alertEdit = (url,concept,mount) => {
+        if(logged){
+            Swal.fire({
+                html: `
+                <div class=${styles.popUpEdit}>
+                    <input type="text" id="concept" placeholder="Concept">
+                    <input type="number" id="mount" placeholder="Mount">
+                </div>`,
+                confirmButtonText: 'Edit',
+                focusConfirm: false,
+                preConfirm: () => {
+                  const concept = Swal.getPopup().querySelector('#concept').value
+                  const mount = Swal.getPopup().querySelector('#mount').value
+                  if (concept || mount) {
+                    editOperation(url,concept,mount)
+                  }
+                }
+              }).then((result) => {
+                if(result.isConfirmed || result.isDismissed){
+                    window.location.reload()
+                }
+              })
+        }else{
+            Swal.fire({
+                icon:'error',
+                title: 'something went wrong',
+                text: 'please login for delete operation'
+            })
+        }
+    }
+
+    const filterIngress = () => {
+        let ingress = filtered.filter(elem => elem.type !== "egress")
+        return setArr(ingress)
+    }
+
+    const filterEgress = () => {
+        let egress = filtered.filter(elem => elem.type !== "ingress")
+        return setArr(egress)
+    }
+
+    const filterAll = () => {
+        return setArr(filtered)
+    }
+
     return(
         <div className={styles.container}>
             <h1>HOME</h1>
-            {arr && arr.length > 0 && loading ? (
+            {arr && arr.length > 0 ? (
                 <div className={styles.contentOperations}>
                     <div>
-                        <label>Filtrar por:</label>
-                        <button onClick={() => setArr(arr.filter(elem => elem.type !== "egress"))}> ingress </button>
-                        <button onClick={() => setArr(arr.filter(elem => elem.type !== "ingress"))}> egress </button>
+                        <button 
+                            className={styles.button} 
+                            onClick={() => currentBalance()}> 
+                                balance
+                        </button>
+                        {balance ? (
+                            <p>{balance}</p>  
+                        ):(
+                            <></>
+                        )}
+                        
                     </div>
-                    <ul>
+                    <div className={styles.filter}>
+                        <label>Filter:</label>
+                        <button 
+                            className={styles.button} 
+                            onClick={() => filterIngress()}> 
+                                ingress 
+                        </button>
+                        <button 
+                            className={styles.button} 
+                            onClick={() => filterEgress()}> 
+                                egress 
+                        </button>
+                        <button 
+                            className={styles.button} 
+                            onClick={() => filterAll()}> 
+                                All
+                        </button>
+                    </div>
+                    <ul className={styles.headersTable}>
                         <li>concept</li>
                         <li>mount</li>
                         <li>type</li>
                         <li>date</li>
-                        <li></li>
+                        <li>edit</li>
                     </ul>
                     {arr.map((elem,i) => {
                         return (
-                            <ul key={i}>
+                            <ul key={i} className={i%2 === 0 ? styles.pair : styles.odd}>
                                 <li>{elem.concept}</li>
                                 <li>{elem.mount}</li>
                                 <li>{elem.type}</li>
                                 <li>{getDate(elem.createdAt)}</li>
-                                <li 
-                                    className={styles.delete}
-                                    onClick={() => verificationUser(`http://localhost:3001/operations/delete/${elem.id}`)}>
-                                        <img src={iconDelete} alt="iconDelete" width="18px"/>
+                                <li className={styles.delete}>
+                                    <img 
+                                        className={styles.iconDelete}
+                                        src={iconDelete} 
+                                        alt="iconDelete" 
+                                        width="18px"
+                                        onClick={() => alertDelete(`http://localhost:3001/operations/delete/${elem.id}`)}
+                                    />
+                                    <img 
+                                        className={styles.iconEdit}
+                                        src={iconEdit} 
+                                        alt="iconEdit" 
+                                        width="18px"
+                                        onClick={() => alertEdit(`http://localhost:3001/operations/update/${elem.id}`)}
+                                    />
                                 </li>
                             </ul>
                         )

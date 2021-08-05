@@ -15,22 +15,82 @@
     margin-left: auto;
     margin-right: auto;
 }
-.contentOperations ul{
+.filter{
+    margin-bottom: 1em;
+}
+.headersTable{
+    background-color: #001529;
+}
+.headersTable li{
+    font-weight: 500 !important;
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+}
+.pair, .odd, .headersTable{
     display: flex;
     flex-direction: row;
     justify-content: center;
     list-style: none;
     padding: 0;
-    border: 1px solid gray;
+    margin: 0;
 }
-.contentOperations ul li{
-    width: 20%;
+.pair{
+    background-color: #52C0F7;
+}
+.odd{
+    background-color: #FFFFFF;
+}
+.contentOperations label {
     font-family: 'Mulish', sans-serif;
-    font-size: 14px;
+}
+.odd li, .pair li, .headersTable li{
+    width: 20%;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    font-family: 'Mulish', sans-serif;
+    font-size: 16px;
     align-self: center;
+    text-align: center;
+}
+.pair li, .headersTable li{
+    color: #FFFFFF;
 }
 .delete{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;  
+}
+.button{
+    width: 100px;
+    border-radius: 5px;
+    padding: 6px;
+    font-size: 16px;
+    font-family: 'Mulish', sans-serif;
+    font-weight: 500 !important;
+    color: #FFFFFF;
+    border: none;
+    outline: none;
+    background-color: #52C0F7;
+    margin: 0.5em;
     cursor: pointer;
+}
+.iconDelete, .iconEdit{
+    margin-left: 0.5em;
+    cursor: pointer;
+}
+.iconDelete:hover, .iconEdit:hover{
+    position: relative;
+    bottom: 0.2em;
+}
+.popUpEdit{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.popUpEdit input{
+    width: 100px;
+    font-family:'Mulish', sans-serif;
+    margin: 1em;
 }
 @media screen and (max-width:600px){
     .contentOperations{

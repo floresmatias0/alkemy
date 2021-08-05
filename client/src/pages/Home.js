@@ -132,6 +132,11 @@ const Home = () => {
             <h1>HOME</h1>
             {arr && arr.length > 0 && loading ? (
                 <div className={styles.contentOperations}>
+                    <div>
+                        <label>Filtrar por:</label>
+                        <button onClick={() => setArr(arr.filter(elem => elem.type !== "egress"))}> ingress </button>
+                        <button onClick={() => setArr(arr.filter(elem => elem.type !== "ingress"))}> egress </button>
+                    </div>
                     <ul>
                         <li>concept</li>
                         <li>mount</li>

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import Operations from './pages/Operations';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import './App.css';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
       <Route exact path="/operations" component={Operations}/>
       <Route exact path="/register" component={Register}/>
       <Route exact path="/login" component={Login}/>
+      <Route exact path="/profile" component={Profile}/>
     </div>
     </>
   );

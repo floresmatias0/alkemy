@@ -40,3 +40,63 @@
 .active {
     color:  #F1C385 !important;
 }
+.NavResponsive{
+    display: none;
+}
+.hidden{
+    display: none;
+}
+.userResponsive, .noUserResponsiv{
+    display: flex;
+    width: 200px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background-color: #001529;
+    z-index: 99;
+}
+@media screen and (max-width:760px) {
+    .Nav{
+        display: none;
+    }
+    .NavResponsive{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        background-color: #001529;
+    }
+    .NavResponsive ul{
+        width: 100%;
+        padding: 0;    
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        align-self: center;
+        text-align: center;
+    }
+    .NavResponsive ul li{
+    width: 50%;
+    align-self: center;
+    font-family: 'Mulish', sans-serif;
+    font-size: 14px;
+    color: gray;
+    font-weight: 600 !important;
+    }
+    .imageResponsive{
+        display: flex;
+        justify-content: flex-start;
+        cursor: pointer;  
+    }
+    .imageResponsive img{
+        margin-left: 1em;
+    }
+    .menu{
+        display: flex;
+        justify-content: flex-end;
+        cursor: pointer;
+    }
+    .menu img{
+        margin-right: 1em;
+    }
+}

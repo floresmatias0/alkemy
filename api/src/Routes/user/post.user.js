@@ -27,7 +27,14 @@ server.post('/login', function(req, res, next) {
       }
       req.logIn(user, function(err) {
         if (err) { return next(err); }
-        return res.status(201).json(user);
+          let userLimit = {
+            id: user.id,
+            name: user.name,
+            surname: user.surname,
+            email: user.email,
+            password: user.password
+          }
+        return res.status(201).json(userLimit);
       });
     })(req, res, next)
   });

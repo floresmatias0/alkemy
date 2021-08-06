@@ -1,6 +1,9 @@
 .container{
     width: 100%;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .container h1{
     margin: 0;
@@ -10,16 +13,70 @@
     font-weight: 400 !important;
     color: #404040;
 }
-.container ul{
+.contentInfo{
     display: flex;
     flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+}
+.headersUser, .data{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
     justify-content: center;
     list-style: none;
     padding: 0;
+    margin: 0;
 }
-.container ul li{
-    width: 20%;
+.headersUser{
+  background-color: #001529;  
+}
+.headersUser li, .data li{
+    width: 33%;
     font-family: 'Mulish', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
+    text-align: center;
     align-self: center;
+
+}
+.headersUser li{
+    color: #FFFFFF;
+    font-weight: 500;
+}
+.button{
+    width: 110px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-family: 'Mulish', sans-serif;
+    font-size: 1rem;
+    font-weight: 400 !important;
+    color: #FFFFFF;
+    border: none;
+    align-self: center;
+    outline: none;
+    background-color: #52C0F7;
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    cursor: pointer;
+}
+
+@media screen and (max-width:760px){
+    .contentInfo{
+        width: 95%;
+        justify-content: center;
+    }
+    .headersUser, .data{
+        width: 50%;
+        flex-direction: column;
+        padding: 0.5em;
+    }
+    .contentInfo{
+        display: flex;
+        flex-direction: row;
+    }
+    .headersUser li, .data li{
+        width: 100%;
+    }
 }

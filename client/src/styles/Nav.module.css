@@ -71,16 +71,7 @@
 .hidden{
     display: none;
 }
-.userResponsive, .noUserResponsiv{
-    display: flex;
-    width: 200px;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background-color: #001529;
-    z-index: 99;
-}
+
 @media screen and (max-width:760px) {
     .Nav{
         display: none;
@@ -88,25 +79,52 @@
     .NavResponsive{
         width: 100%;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
+        position: relative;
+    }
+    .separatorNav{
+        width: 100%;
         background-color: #001529;
     }
-    .NavResponsive ul{
+    .separatorNewNav{
+        width: 35%;
+        position: absolute;
+        top: 5em;
+        right: 1em;
+        background-color: #001529;
+    }
+    .contentNavResponsive, .contentUserResponsive{
         width: 100%;
         padding: 0;    
         display: flex;
-        flex-direction: row;
         list-style: none;
         align-self: center;
         text-align: center;
     }
-    .NavResponsive ul li{
-    width: 50%;
-    align-self: center;
-    font-family: 'Mulish', sans-serif;
-    font-size: 14px;
-    color: gray;
-    font-weight: 600 !important;
+    .contentNavResponsive{
+        flex-direction: row;
+    }
+    .contentUserResponsive{
+        flex-direction: column;
+    }
+    .contentNavResponsive li, .contentUserResponsive li{
+        align-self: center;
+        font-family: 'Mulish', sans-serif;
+        color: gray;
+        font-weight: 600 !important;
+    }
+    .contentNavResponsive li{
+        width: 50%;
+    }
+    .contentUserResponsive li{
+        width: 100%;
+        margin: 0.5em;
+        font-size: 16px;
+    }
+    .contentUserResponsive li a{
+        text-decoration: none;
+        color: gray;
+        font-weight: 600 !important;
     }
     .imageResponsive{
         display: flex;

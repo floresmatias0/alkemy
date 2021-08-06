@@ -89,8 +89,8 @@
 .headersTable li{
     font-weight: 500 !important;
 }
-@media screen and (max-width:600px){
+@media screen and (max-width:760px){
     .contentOperations{
-        width: 100%;
+        width: 95%;
     }
 }

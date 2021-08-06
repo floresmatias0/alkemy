@@ -225,7 +225,7 @@ const Home = () => {
             <h1>HOME</h1>
             {arr && arr.length > 0 ? (
                 <div className={styles.contentOperations}>
-                    <div>
+                    <div className={styles.contentBalance}>
                         <button 
                             className={styles.button} 
                             onClick={() => currentBalance()}> 
@@ -236,10 +236,9 @@ const Home = () => {
                         ):(
                             <></>
                         )}
-                        
                     </div>
+                    <label>Filter:</label>
                     <div className={styles.filter}>
-                        <label>Filter:</label>
                         <button 
                             className={styles.button} 
                             onClick={() => filterIngress()}> 
@@ -288,7 +287,7 @@ const Home = () => {
                                 </li>
                             </ul>
                         )
-                    })}
+                    }).slice(0,10)}
                 </div>
             ) : (
                 <></>

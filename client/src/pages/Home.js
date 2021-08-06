@@ -183,7 +183,9 @@ const Home = () => {
                     <input type="text" id="concept" placeholder="Concept">
                     <input type="number" id="mount" placeholder="Mount">
                 </div>`,
+                showCancelButton: true,
                 confirmButtonText: 'Edit',
+                cancelButtonColor: '#d33',
                 focusConfirm: false,
                 preConfirm: () => {
                   const concept = Swal.getPopup().querySelector('#concept').value
@@ -193,7 +195,7 @@ const Home = () => {
                   }
                 }
               }).then((result) => {
-                if(result.isConfirmed || result.isDismissed){
+                if(result.isConfirmed){
                     window.location.reload()
                 }
               })

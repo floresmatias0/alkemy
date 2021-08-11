@@ -7,7 +7,7 @@ import menuFold from '../assets/images/menu.png';
 const Navbar = () => {
     const history = useHistory();
 
-    const [hidden, setHidden] = useState(true);
+    const [hidden, setHidden] = useState(false);
     let logged = JSON.parse(localStorage.getItem("user"));
 
     return (

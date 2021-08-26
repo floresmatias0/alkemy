@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(()=>{
        const callAll = () => {
-            getOperations('http://localhost:3001/operations')
+            getOperations('https://heroku-api-alkemy.herokuapp.com/operations')
        } 
        callAll()
         // eslint-disable-next-line
@@ -277,14 +277,14 @@ const Home = () => {
                                         src={iconDelete} 
                                         alt="iconDelete" 
                                         width="18px"
-                                        onClick={() => alertDelete(`http://localhost:3001/operations/delete/${elem.id}`)}
+                                        onClick={() => alertDelete(`https://heroku-api-alkemy.herokuapp.com/operations/delete/${elem.id}`)}
                                     />
                                     <img 
                                         className={styles.iconEdit}
                                         src={iconEdit} 
                                         alt="iconEdit" 
                                         width="18px"
-                                        onClick={() => alertEdit(`http://localhost:3001/operations/update/${elem.id}`)}
+                                        onClick={() => alertEdit(`https://heroku-api-alkemy.herokuapp.com/operations/update/${elem.id}`)}
                                     />
                                 </li>
                             </ul>

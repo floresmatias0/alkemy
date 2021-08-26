@@ -93,8 +93,8 @@ const Request = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if(logged){
-            createOperation('http://localhost:3001/operations/create')
-            getUserById(`http://localhost:3001/users/${logged.id}`)
+            createOperation('https://heroku-api-alkemy.herokuapp.com/operations/create')
+            getUserById(`https://heroku-api-alkemy.herokuapp.com/users/${logged.id}`)
         }else{
             Swal.fire({
                 icon:'error',

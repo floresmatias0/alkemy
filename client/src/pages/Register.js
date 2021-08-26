@@ -101,7 +101,7 @@ const Register = () => {
                 text: 'complete the form'
             })
         }else{
-           postRegister('http://localhost:3001/users/create');
+           postRegister('https://heroku-api-alkemy.herokuapp.com/users/create');
         }
     }
 

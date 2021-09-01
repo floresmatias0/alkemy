@@ -8,6 +8,7 @@ const Home = () => {
 
     let logged = JSON.parse(localStorage.getItem("user"));
     const [arr, setArr] = useState("");
+    const [loading, setLoading] = useState(false)
     const [filtered, setFiltered] = useState("");
     const [balance, setBalance] = useState("");
 
@@ -58,10 +59,12 @@ const Home = () => {
 
     function showOperations() {
         if (http_request.readyState === 4) {
+            setLoading(false)
             if (http_request.status === 200) {
                 let response = JSON.parse(http_request.response) 
                 setFiltered(response)
                 setArr(response);
+                setLoading(true)
             } else {
                 alert('Hubo problemas con la petición.');
             }
@@ -228,7 +231,7 @@ const Home = () => {
     return(
         <div className={styles.container}>
             <h1>HOME</h1>
-            {arr && arr.length > 0 ? (
+            {loading && arr && arr.length > 0 ? (
                 <div className={styles.contentOperations}>
                     <div className={styles.contentBalance}>
                         <button 
@@ -295,7 +298,7 @@ const Home = () => {
                     }).slice(0,10)}
                 </div>
             ) : (
-                <></>
+                <p>Loading...</p>
             )}
         </div>
     )

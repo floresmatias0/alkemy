@@ -7,6 +7,9 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import './App.css';
+import PrivateRouteRegister from './components/PrivateRoutes/PrivateRouteRegister';
+import PrivateRouteLogin from './components/PrivateRoutes/PrivateRouteLogin';
+import PrivateRouteProfile from './components/PrivateRoutes/PrivateRouteProfile'
 
 const App = () => {
   return (
@@ -15,9 +18,9 @@ const App = () => {
     <div className="fullApp">
       <Route exact path="/" component={Home}/> 
       <Route exact path="/operations" component={Operations}/>
-      <Route exact path="/register" component={Register}/>
-      <Route exact path="/login" component={Login}/>
-      <Route exact path="/profile" component={Profile}/>
+      <PrivateRouteRegister exact path="/register" component={Register}/>
+      <PrivateRouteLogin exact path="/login" component={Login}/>
+      <PrivateRouteProfile exact path="/profile" component={Profile}/>
     </div>
     </>
   );

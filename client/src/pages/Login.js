@@ -1,26 +1,14 @@
-import React,{ useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import logoAlkemy from '../assets/images/logo_labs.png';
 import styles from '../styles/Login.module.css';
 import Swal from 'sweetalert2';
+import { Formik, Form, Field } from 'formik';
 
 const Login = () => {
 
-    let logged = JSON.parse(localStorage.getItem("user"));
-
-    useEffect(() => {
-        if(logged){
-            history.push("/")
-        }// eslint-disable-next-line
-    },[])
-
     const history = useHistory();
 
-    const [errors, setErrors] = useState({})
-    const [user, setUser] = useState({
-        email:"",
-        password:""
-    })
 
     const alertContents = () => {
 
@@ -46,13 +34,12 @@ const Login = () => {
             } else {
                 alert("Hubo un problema en la peticion")
             }
-        }else{
-            console.log(http_request.readyState)
         }
     }
     
     var http_request = false;
-    const postLogin = (url) => {
+
+    const postLogin = (url,user) => {
 
         http_request = false;
 
@@ -73,71 +60,58 @@ const Login = () => {
         http_request.send(`email=${user.email}&password=${user.password}`);
     }
 
-    const handleChange = (e) => {
-        setUser({
-            ...user,
-            [e.target.name]: e.target.value
-        });
-
-        setErrors(validate({
-            ...user,
-            [e.target.name]: e.target.value
-            })
-        );
-    }
-
-    const validate = (user) => {
-        let errors = {};
-        if(!user.email) {
-            errors.email = 'email is required';
-        } else if (!/\S+@\S+/.test(user.email)) {
-             errors.email = 'email is invalid';
-        }
-        return errors;
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if(!user.password || !user.email){
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'complete the form'
-            })
-        }else{
-           postLogin('https://heroku-api-alkemy.herokuapp.com/users/login');
-        }
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.contentInfo}>
                 <div className={styles.contentImage}>
                     <img src={logoAlkemy} alt="logo-alkemy"/>
                 </div>
-                <form onSubmit={handleSubmit} className={styles.form}>
-                    <input type='email' 
-                        onChange={handleChange}
-                        name="email"
-                        value={user.email}
-                        placeholder="Email"
-                        autoComplete="new-password"
-                    />
-                    {errors.email && (errors.email === 'email is required' || errors.email === 'email is invalid')
-                    ?(
-                        <p className={`${styles.error} animate__animated animate__shakeX`}>{errors.email}</p> 
-                    ):(
-                        <></>
+                <Formik
+                    initialValues={{
+                        email: '',
+                        password: ''
+                    }}
+                    validate={(fields) => {
+                        let errors = {}
+                        //Validate email
+                        if(!fields.email){
+                            errors.email = 'Please insert email to continue'
+                        }else if(!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(fields.email)){
+                            errors.email = 'The email can only contain letters, numbers, periods, scripts and underscore'
+                        }
+                        //Validate password
+                        if(!fields.password){
+                            errors.password = 'Please insert password to continue'
+                        }else if(!/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(fields.password)){
+                            errors.password = 'The password must be at least 8-16 characters long, at least one digit, at least one lowercase, and at least one uppercase. It may have other symbols'
+                        }
+                        return errors
+                    }}
+                    onSubmit={(fields, { resetForm }) => {
+                        resetForm();
+                        postLogin('http://localhost:3001/users/login',fields)
+                    }}
+                >
+                    {({ touched,errors }) => (
+                        <Form className={styles.form}>
+                            <Field type='email' 
+                                name="email"
+                                placeholder="correo@correo.com"
+                            />
+                            {touched.email && errors.email ? <p className={styles.error}>{errors.email}</p>: ''}
+
+                            <Field 
+                                type='password' 
+                                name="password"
+                                placeholder="Password"
+                            />
+                            {touched.password && errors.password ? <p className={styles.error}>{errors.password}</p>: ''}
+
+                            <button type='submit' className={styles.button}> Sign in </button>
+                        </Form>
                     )}
-                    <input type='password' 
-                        onChange={handleChange}
-                        name="password"
-                        value={user.password}
-                        placeholder="Password"
-                        autoComplete="new-password"
-                    />
-                    <button type='submit' className={styles.button}> Sign in </button>
-                </form>
+                </Formik>
+                
                 <h3>Don't have an account? <Link to="/register">Sign up</Link></h3>
             </div>
         </div>

@@ -28,7 +28,7 @@ server.post('/login', function(req, res, next) {
         
         if (err) { return next(err); }
 
-          const token = jwt.sign({ user }, 'top_secret', { expiresIn: '1m' })
+          const token = jwt.sign({ user }, 'top_secret', { expiresIn: '5m' })
 
         return res.status(201).json(token);
       });

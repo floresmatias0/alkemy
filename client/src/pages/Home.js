@@ -13,7 +13,7 @@ const Home = () => {
 
     useEffect(()=>{
        const callAll = () => {
-            getOperations('https://heroku-api-alkemy.herokuapp.com/operations')
+            getOperations('http://localhost:3001/operations')
        } 
        callAll()
         // eslint-disable-next-line
@@ -124,15 +124,22 @@ const Home = () => {
         http_request.open('PUT', url, true);
         http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         http_request.send(`concept=${concept}&mount=${mount}`);
+        
     }
 
     function responseEdit() {
         if (http_request.readyState === 4) {
             if (http_request.status === 201) {
                 Swal.fire({
-                    icon: 'success',
-                    title: 'edit successfully'
-                }) 
+                    icon:'success',
+                    html: `<p>Edition complete</p>`,
+                    confirmButtonText: 'Cool'
+                })
+                .then((result) => {
+                    if(result.isConfirmed || result.isDismissed){
+                        window.location.reload()
+                    }
+                })
             } else {
                 alert('Hubo problemas con la petición.');
             }
@@ -159,11 +166,6 @@ const Home = () => {
               }).then((result) => {
                 if (result.isConfirmed) {
                     deleteOperation(url)
-                    Swal.fire(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                    )
                 }
               })  
         }else{
@@ -175,7 +177,7 @@ const Home = () => {
         }
     }
 
-    const alertEdit = (url,concept,mount) => {
+    const alertEdit = (url) => {
         if(logged){
             Swal.fire({
                 html: `
@@ -190,13 +192,14 @@ const Home = () => {
                 preConfirm: () => {
                   const concept = Swal.getPopup().querySelector('#concept').value
                   const mount = Swal.getPopup().querySelector('#mount').value
-                  if (concept || mount) {
+                  if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(concept)){
+                    Swal.fire({
+                        icon:'error',
+                        html: `<p>The concept can only contain letters and spaces</p>`,
+                    })
+                  }else if (concept || mount) {
                     editOperation(url,concept,mount)
                   }
-                }
-              }).then((result) => {
-                if(result.isConfirmed){
-                    window.location.reload()
                 }
               })
         }else{
@@ -277,14 +280,14 @@ const Home = () => {
                                         src={iconDelete} 
                                         alt="iconDelete" 
                                         width="18px"
-                                        onClick={() => alertDelete(`https://heroku-api-alkemy.herokuapp.com/operations/delete/${elem.id}`)}
+                                        onClick={() => alertDelete(`http://localhost:3001/operations/delete/${elem.id}`)}
                                     />
                                     <img 
                                         className={styles.iconEdit}
                                         src={iconEdit} 
                                         alt="iconEdit" 
                                         width="18px"
-                                        onClick={() => alertEdit(`https://heroku-api-alkemy.herokuapp.com/operations/update/${elem.id}`)}
+                                        onClick={() => alertEdit(`http://localhost:3001/operations/update/${elem.id}`)}
                                     />
                                 </li>
                             </ul>

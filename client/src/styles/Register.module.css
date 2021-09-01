@@ -37,12 +37,12 @@
 .form input:focus{
     outline: none;
     border: 2px solid #007BAD;
-    transition: border-bottom 1s;
+    transition: border .2s;
 }
 .error{
     margin: 0;
     font-family: 'Mulish', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     color: #FF0000;
 }
 .button{

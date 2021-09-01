@@ -1,14 +1,31 @@
-import React,{ useState } from 'react';
+import React,{ useState, useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
 import styles from '../styles/Nav.module.css';
 import alkemyLogo from '../assets/images/logo-header.png';
 import menuFold from '../assets/images/menu.png';
 
 const Navbar = () => {
-    const history = useHistory();
 
-    const [hidden, setHidden] = useState(false);
     let logged = JSON.parse(localStorage.getItem("user"));
+    const history = useHistory();
+    const [hidden, setHidden] = useState(false);
+    const [name, setName] = useState(null);
+
+    useEffect(() => {
+        if(logged){
+            let decode = parseJwt(logged)
+            setName(decode.user.name)
+        }// eslint-disable-next-line
+    },[])
+
+    const parseJwt = (token) => {
+        var base64Url = token.split('.')[1];
+        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+    
+        return JSON.parse(base64);
+    };
 
     return (
         <>
@@ -25,7 +42,7 @@ const Navbar = () => {
                 <ul className={styles.user}>
                     <li>
                         <NavLink activeClassName={styles.active} to="/profile"> 
-                            {logged.name} 
+                            {name} 
                         </NavLink>
                     </li> 
                 </ul>
@@ -53,7 +70,7 @@ const Navbar = () => {
                     <ul className={styles.contentUserResponsive}>
                         <li>
                             <NavLink activeClassName={styles.active} to="/profile"> 
-                                {logged.name} 
+                                {name} 
                             </NavLink>
                         </li> 
                         <li> 

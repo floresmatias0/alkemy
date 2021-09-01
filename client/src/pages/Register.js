@@ -7,51 +7,51 @@ import Swal from 'sweetalert2';
 
 const Register = () => {
     const history = useHistory();
-
-    // const alertContents2 = () => {
-
-    //     if (http_request.readyState === 4) {
-    //         if (http_request.status === 201) {
-    //             Swal.fire({
-    //                 icon: 'success',
-    //                 title: 'Great!',
-    //                 text: 'try log in now',
-    //                 confirmButtonText: 'Cool'
-    //             })
-    //             .then(result => {
-    //                 if(result.isConfirmed || result.isDismissed){
-    //                     history.push("/login")
-    //                 }
-    //             })
-    //         } else {
-    //             alert("Hubo un problema en la peticion")
-    //         }
-    //     }
-
-    // }
     
-    // var http_request = false;
+    const alertContents2 = () => {
 
-    // const postRegister = (url) => {
+        if (http_request.readyState === 4) {
+            if (http_request.status === 201) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Great!',
+                    text: 'try log in now',
+                    confirmButtonText: 'Cool'
+                })
+                .then(result => {
+                    if(result.isConfirmed || result.isDismissed){
+                        history.push("/login")
+                    }
+                })
+            } else {
+                alert("Hubo un problema en la peticion")
+            }
+        }
 
-    //     http_request = false;
+    }
+    
+    var http_request = false;
 
-    //     if (window.XMLHttpRequest) { 
-    //         http_request = new XMLHttpRequest();
-    //         if (http_request.overrideMimeType) {
-    //             http_request.overrideMimeType('text/xml');
-    //         }
-    //     } 
+    const postRegister = (url,user) => {
+        console.log(url,user)
+        http_request = false;
 
-    //     if (!http_request) {
-    //         alert('Falla :( No es posible crear una instancia XMLHTTP');
-    //         return false;
-    //     }
-    //     http_request.onreadystatechange = alertContents2;
-    //     http_request.open('POST', url, true);
-    //     http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    //     http_request.send(`name=${user.name}&surname=${user.surname}&email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
-    // }
+        if (window.XMLHttpRequest) { 
+            http_request = new XMLHttpRequest();
+            if (http_request.overrideMimeType) {
+                http_request.overrideMimeType('text/xml');
+            }
+        } 
+
+        if (!http_request) {
+            alert('Falla :( No es posible crear una instancia XMLHTTP');
+            return false;
+        }
+        http_request.onreadystatechange = alertContents2;
+        http_request.open('POST', url, true);
+        http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        http_request.send(`name=${user.name}&surname=${user.surname}&email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
+    }
 
     return (
         <div className={styles.container}>
@@ -76,18 +76,38 @@ const Register = () => {
                         }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(fields.name)){
                             errors.name = 'The name can only contain letters and spaces'
                         }
+                        //Validate surname
+                        if(!fields.surname){
+                            errors.surname = 'Please insert surname to continue'
+                        }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(fields.surname)){
+                            errors.surname = 'The surname can only contain letters and spaces'
+                        }
                         //Validate email
                         if(!fields.email){
                             errors.email = 'Please insert email to continue'
                         }else if(!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(fields.email)){
                             errors.email = 'The email can only contain letters, numbers, periods, scripts and underscore'
                         }
-
+                        //Validate password
+                        if(!fields.password){
+                            errors.password = 'Please insert password to continue'
+                        }else if(!/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(fields.password)){
+                            errors.password = 'The password must be at least 8-16 characters long, at least one digit, at least one lowercase, and at least one uppercase. It may have other symbols'
+                        }
+                        //Validate confirm password
+                        if(!fields.password_virtual){
+                            errors.password_virtual = 'Please confirm password to continue'
+                        }else if(!/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/.test(fields.password)){
+                            errors.password_virtual = 'The password must be at least 8-16 characters long, at least one digit, at least one lowercase, and at least one uppercase. It may have other symbols'
+                        }else if(fields.password_virtual !== fields.password){
+                            errors.password_virtual = 'Passwords have to match'
+                        }
+                        
                         return errors
                     }}
-                    onSubmit={(fields, {resetForm}) => {
+                    onSubmit={(fields, { resetForm }) => {
                         resetForm();
-                        console.log('Form send')
+                        postRegister('http://localhost:3001/users/create',fields)
                     }}
                 >
                     {({ errors,touched }) => (
@@ -104,6 +124,7 @@ const Register = () => {
                                 name="surname"
                                 placeholder="Doeh"
                             />
+                            {touched.surname && errors.surname ? <p className={styles.error}>{errors.surname}</p> : ''}
 
                             <Field
                                 type='email' 
@@ -117,12 +138,14 @@ const Register = () => {
                                 name="password"
                                 placeholder="password"
                             />
+                            {touched.password && errors.password ? <p className={styles.error}>{errors.password}</p> : ''}
 
                             <Field 
                                 type='password' 
                                 name="password_virtual"
                                 placeholder="Confirm password"
                             />
+                            {touched.password_virtual && errors.password_virtual ? <p className={styles.error}>{errors.password_virtual}</p> : ''}
 
                             <button type='submit' className={styles.button}> Register </button>
                         </Form>

@@ -1,7 +1,11 @@
 const server = require('express').Router();
 const { createUser } = require('../../Controllers/user/post.user');
 const passport = require('../../Middlewares/passport.middleware');
+const jwt = require('jsonwebtoken')
 
+const generateToken = (user) => {
+  return jwt.sign({id: user.id, rol: user.rol}, ACCESS_TOKEN_SECRET,{expiresIn: "40m"});
+}
 
 server.post('/create', (req, res, next) => { 
     const { name,surname,email,password,password_virtual } = req.body

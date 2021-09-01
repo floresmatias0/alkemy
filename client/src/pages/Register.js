@@ -33,7 +33,6 @@ const Register = () => {
     var http_request = false;
 
     const postRegister = (url,user) => {
-        console.log(url,user)
         http_request = false;
 
         if (window.XMLHttpRequest) { 

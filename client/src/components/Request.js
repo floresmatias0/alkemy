@@ -55,36 +55,6 @@ const Request = () => {
         http_request.send(`concept=${input.concept}&mount=${input.mount}&type=${input.type}&idUser=${decode.user.id}`);
     }
 
-    // function getUserById(url) {
-    //     http_request = false;
-
-    //     if (window.XMLHttpRequest) { // Mozilla, Safari,...
-    //         http_request = new XMLHttpRequest();
-    //         if (http_request.overrideMimeType) {
-    //             http_request.overrideMimeType('text/xml');
-    //         }
-    //     } 
-
-    //     if (!http_request) {
-    //         alert('Falla :( No es posible crear una instancia XMLHTTP');
-    //         return false;
-    //     }
-    //     http_request.onreadystatechange = showUser;
-    //     http_request.open('GET', url, false);
-    //     http_request.send();
-    // }
-
-    // function showUser() {
-    //     if (http_request.readyState === 4) {
-    //         if (http_request.status === 201) {
-    //             localStorage.removeItem("user");
-    //             localStorage.setItem("user", http_request.response)
-    //         } else {
-    //             alert('Hubo problemas con la petición.');
-    //         }
-    //     }
-    // }
-
     const getDate = (time) => {
         let d = new Date(time);
         let date = d.toDateString();

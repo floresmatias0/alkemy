@@ -3,7 +3,6 @@ const cookiParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const flash = require('connect-flash')
-const session = require('express-session')
 
 const cors = require('./Middlewares/cors.middleware')
 const passport = require('./Middlewares/passport.middleware')
@@ -25,15 +24,6 @@ server.use((req, res, next) => {
   next();
 });
 server.use(cookiParser());
-server.use(session({ 
-  name: 'sid',
-  secret: SECRET, 
-  resave:false,
-  saveUninitialized:false,
-  cookie:{
-    maxAge: 1000 * 60 * 60 * 4 // Está en milisegundos --> 4hs
-  }
-}));
 
 server.use(passport.initialize());
 server.use(passport.session());

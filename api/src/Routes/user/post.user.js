@@ -1,7 +1,7 @@
 const server = require('express').Router();
 const { createUser } = require('../../Controllers/user/post.user');
 const passport = require('../../Middlewares/passport.middleware');
-
+const jwt = require('jsonwebtoken')
 
 server.post('/create', (req, res, next) => { 
     const { name,surname,email,password,password_virtual } = req.body
@@ -17,24 +17,20 @@ server.post('/create', (req, res, next) => {
 });
 
 server.post('/login', function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-  
+    passport.authenticate('local', {session: false}, function(err, user, info) {
       if(info === "Password Invalid"){
         return res.status(402).send("Password Invalid try again")
       }
       if(info === "Email Invalid"){
         return res.status(402).send("Email Invalid try again")
       }
-      req.logIn(user, function(err) {
+      req.logIn(user, {session: false}, function(err) {
+        
         if (err) { return next(err); }
-          let userLimit = {
-            id: user.id,
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            password: user.password
-          }
-        return res.status(201).json(userLimit);
+
+          const token = jwt.sign({ user }, 'top_secret', { expiresIn: '1m' })
+
+        return res.status(201).json(token);
       });
     })(req, res, next)
   });

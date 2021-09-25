@@ -2,19 +2,11 @@ import React,{ useState } from 'react';
 import styles from "../styles/Request.module.css";
 import Swal from 'sweetalert2';
 import { Formik, Form, Field } from 'formik';
+import { parseJwt } from '../helpers/parseJwt/parseJwt';
 
 const Request = () => {
     
     let logged = JSON.parse(localStorage.getItem("user"));
-
-    const parseJwt = (token) => {
-        var base64Url = token.split('.')[1];
-        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-    
-        return JSON.parse(base64);
-    };
 
     const [result, setResult] = useState([])
 

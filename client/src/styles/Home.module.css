@@ -101,6 +101,12 @@
     justify-content: center;
     margin-bottom: 1em;
 }
+.active{
+    display: flex;
+}
+.active{
+    display: none;
+}
 @media screen and (max-width:600px){
     .contentOperations{
         width: 95%;

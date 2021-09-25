@@ -1,31 +1,17 @@
 const server = require('express').Router();
-const { getUserById } = require('../../Controllers/user/get.user');
-const { User } = require('../../db.js');
-
+const { getUserById, getAllUsers } = require('../../Controllers/user/get.user');
 
 server.get('/', (req, res, next) => { 
-    User.findAll()
-    .then(users => {
-        res.status(201).json(users);
-    }) 
-    .catch(error => {
-        console.log(error)
-        res.status(400).send(error.message)
-    })
+    getAllUsers()
+    .then(users => res.status(201).json(users)) 
+    .catch(error => res.status(401).send(error.message))
 });
 
 server.get('/:idUser', (req, res, next) => { 
     const {idUser} = req.params
- 
     getUserById(idUser)
-    .then(user => {
-        console.log(user)
-        res.status(201).json(user);
-    }) 
-    .catch(error => {
-        console.log(error)
-        res.status(400).send(error.message)
-    })
+    .then(user => res.status(201).json(user)) 
+    .catch(error => res.status(401).send(error.message))
 });
 
 module.exports = server;

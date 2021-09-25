@@ -1,27 +1,34 @@
 import React,{ useEffect, useState } from 'react';
+import { useHistory } from 'react-router';
+import { connect } from 'react-redux';
+import { loginUser } from '../store/user/actions';
 import styles from '../styles/Profile.module.css';
 
-const Profile = () => {
-
+const Profile = ({USER,LOGIN}) => {
     const [ user, setUser ] = useState()
+    let history = useHistory()
 
-    let logged = JSON.parse(localStorage.getItem("user"))
-    
     useEffect(() => {
-        if(logged){
-          let decode = parseJwt(logged)
+        if(USER){
+          let decode = parseJwt(USER)
           let obj = {
               name: decode.user.name,
               surname: decode.user.surname,
               email: decode.user.email
           }
           setUser(obj) 
-        }// eslint-disable-next-line
-    },[])
+        }
+    },[USER])
+
+    useEffect(() => {
+        if(!USER){
+            history.push("/login")
+        }
+    },[USER,history])
 
     const logout = () => {
+        LOGIN(false)
         localStorage.clear()
-        window.location.reload()
     }
 
     const parseJwt = (token) => {
@@ -63,4 +70,16 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+const mapStateToProps = (state) => {
+    return {
+        USER: state.userReducer.user
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        LOGIN: (user) => dispatch(loginUser(user))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Profile);

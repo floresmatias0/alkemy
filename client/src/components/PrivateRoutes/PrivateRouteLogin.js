@@ -1,20 +1,16 @@
-import React, {useEffect, useState} from 'react'
 import { Route, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const PrivateRouteLogin = ({component: Component, ...rest}) => {
-
-    const [user, setUser] = useState(null)
-    let logged = localStorage.getItem("user")
-
-    useEffect(() => {
-        if(logged){
-            setUser(logged)
-        }// eslint-disable-next-line
-    },[])
-
+const PrivateRouteLogin = ({USER, component: Component, ...rest}) => {
     return (
-      <Route {...rest}>{user ? <Redirect to='/'/> : <Component/>}</Route>
+      <Route {...rest}>{USER ? <Redirect to='/'/> : <Component/>}</Route>
     )
 }
 
-export default PrivateRouteLogin;
+const mapStateToProps = (state) => {
+    return {
+        USER: state.userReducer.user
+    }
+}
+
+export default connect(mapStateToProps)(PrivateRouteLogin);

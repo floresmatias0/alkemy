@@ -4,61 +4,13 @@ import logoAlkemy from '../assets/images/logo_labs.png';
 import styles from '../styles/Login.module.css';
 import Swal from 'sweetalert2';
 import { Formik, Form, Field } from 'formik';
+import axios from 'axios';
+import { loginUser } from '../store/user/actions';
+import { connect } from 'react-redux';
 
-const Login = () => {
+const Login = ({LOGIN}) => {
 
     const history = useHistory();
-
-
-    const alertContents = () => {
-
-        if (http_request.readyState === 4) {
-            if (http_request.status === 201) {
-                localStorage.setItem("user", http_request.response)
-                Swal.fire({
-                    icon:'success',
-                    title: 'Welcome',
-                    confirmButtonText: 'Cool'
-                })
-                .then(result => {
-                    if(result.isConfirmed || result.isDismissed){
-                        history.push("/")
-                    }
-                })
-            } else if (http_request.status === 402) {
-                Swal.fire({
-                    icon:'error',
-                    title: 'something went wrong',
-                    text: 'check email or password'
-                })
-            } else {
-                alert("Hubo un problema en la peticion")
-            }
-        }
-    }
-    
-    var http_request = false;
-
-    const postLogin = (url,user) => {
-
-        http_request = false;
-
-        if (window.XMLHttpRequest) { // Mozilla, Safari,...
-            http_request = new XMLHttpRequest();
-            if (http_request.overrideMimeType) {
-                http_request.overrideMimeType('text/xml');
-            }
-        } 
-
-        if (!http_request) {
-            alert('Falla :( No es posible crear una instancia XMLHTTP');
-            return false;
-        }
-        http_request.onreadystatechange = alertContents;
-        http_request.open('POST', url, true);
-        http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`email=${user.email}&password=${user.password}`);
-    }
 
     return (
         <div className={styles.container}>
@@ -89,7 +41,40 @@ const Login = () => {
                     }}
                     onSubmit={(fields, { resetForm }) => {
                         resetForm();
-                        postLogin('http://localhost:3001/users/login',fields)
+                        let options = {
+                            "method": "POST",
+                            "url": "http://localhost:3001/users/login",
+                            "header": {
+                                ContentType: "application/json"
+                            },
+                            "data": {
+                                email : fields.email,
+                                password : fields.password
+                            }
+                        }
+                        axios.request(options)
+                        .then(user => {
+                            localStorage.setItem("user", JSON.stringify(user.data))
+                            LOGIN(user.data)
+                            Swal.fire({
+                                icon:'success',
+                                title: 'Welcome',
+                                confirmButtonText: 'Cool'
+                            })
+                            .then(result => {
+                                if(result.isConfirmed || result.isDismissed){
+                                    history.push("/")
+                                }
+                            })
+                        })
+                        .catch(err => {
+                            Swal.fire({
+                                icon:'error',
+                                title: 'something went wrong',
+                                text: `${err.message}`
+                            })
+                        })
+                        
                     }}
                 >
                     {({ touched,errors }) => (
@@ -118,4 +103,10 @@ const Login = () => {
     )      
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => {
+    return{
+        LOGIN: (user) => dispatch(loginUser(user))
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Login);

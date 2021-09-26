@@ -2,6 +2,7 @@ import React,{ useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { connect } from 'react-redux';
 import { loginUser } from '../store/user/actions';
+import { parseJwt } from '../helpers/parseJwt/parseJwt'
 import styles from '../styles/Profile.module.css';
 
 const Profile = ({USER,LOGIN}) => {
@@ -30,15 +31,6 @@ const Profile = ({USER,LOGIN}) => {
         LOGIN(false)
         localStorage.clear()
     }
-
-    const parseJwt = (token) => {
-        var base64Url = token.split('.')[1];
-        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-    
-        return JSON.parse(base64);
-    };
 
     return (
         <div className={styles.container}>

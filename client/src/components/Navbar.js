@@ -4,6 +4,7 @@ import styles from '../styles/Nav.module.css';
 import alkemyLogo from '../assets/images/logo-header.png';
 import menuFold from '../assets/images/menu.png';
 import { connect } from 'react-redux';
+import { parseJwt } from '../helpers/parseJwt/parseJwt';
 
 const Navbar = ({USER}) => {
 
@@ -11,20 +12,11 @@ const Navbar = ({USER}) => {
     const [hidden, setHidden] = useState(false);
     const [name, setName] = useState(null);
 
-    const parseJwt = (token) => {
-        var base64Url = token.split('.')[1];
-        var base64 = decodeURIComponent(atob(base64Url).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-    
-        return JSON.parse(base64);
-    };
-
     useEffect(() => {
         if(USER){
             let decode = parseJwt(USER)
             setName(decode.user.name)
-        }// eslint-disable-next-line
+        }
     },[USER])
 
     return (

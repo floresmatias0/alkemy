@@ -7,6 +7,7 @@ import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import { loginUser } from '../store/user/actions';
 import { connect } from 'react-redux';
+import { variables } from '../helpers/environment/environment';
 
 const Login = ({LOGIN}) => {
 
@@ -43,7 +44,7 @@ const Login = ({LOGIN}) => {
                         resetForm();
                         let options = {
                             "method": "POST",
-                            "url": "http://localhost:3001/users/login",
+                            "url": `${variables.urlUser}/login`,
                             "header": {
                                 ContentType: "application/json"
                             },

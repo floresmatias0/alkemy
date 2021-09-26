@@ -3,6 +3,8 @@ import styles from "../styles/Request.module.css";
 import Swal from 'sweetalert2';
 import { Formik, Form, Field } from 'formik';
 import { parseJwt } from '../helpers/parseJwt/parseJwt';
+import axios from 'axios';
+import { variables } from '../helpers/environment/environment';
 
 const Request = () => {
     
@@ -10,46 +12,8 @@ const Request = () => {
 
     const [result, setResult] = useState([])
 
-    var http_request = false;
-    const responseCreate = () => {
-        if (http_request.readyState === 4) {
-            if (http_request.status === 200) {
-                let response = JSON.parse(http_request.response)
-                setResult(result.concat(response))
-
-                Swal.fire({
-                    icon:'success',
-                    title: 'new operation create successfully'
-                })
-            } else {
-                alert("Hubo un problema en la peticion")
-            }
-        }
-    }
-    
-    const createOperation = (url,input) => {
-        http_request = false;
-        let decode = parseJwt(logged)
-        if (window.XMLHttpRequest) { // Mozilla, Safari,...
-            http_request = new XMLHttpRequest();
-            if (http_request.overrideMimeType) {
-                http_request.overrideMimeType('text/xml');
-            }
-        } 
-
-        if (!http_request) {
-            alert('Falla :( No es posible crear una instancia XMLHTTP');
-            return false;
-        }
-        http_request.onreadystatechange = responseCreate;
-        http_request.open('POST', url, false);
-        http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`concept=${input.concept}&mount=${input.mount}&type=${input.type}&idUser=${decode.user.id}`);
-    }
-
     const getDate = (time) => {
-        let d = new Date(time);
-        let date = d.toDateString();
+        let date = new Date(time).toDateString();
 
         return date
     } 
@@ -82,7 +46,28 @@ const Request = () => {
                     }}
                     onSubmit={(fields) => {
                         if(logged){
-                            createOperation('http://localhost:3001/operations/create',fields)
+                            let decode = parseJwt(logged)
+                            let options = {
+                                "method" : "POST",
+                                "url" : `${variables.urlOperations}/create`,
+                                "header" : {
+                                    ContentType : "application/json"
+                                },
+                                "data" : {
+                                    concept : fields.concept,
+                                    mount : fields.mount,
+                                    type: fields.type,
+                                    idUser: decode.user.id
+                                }
+                            }
+                            axios.request(options)
+                            .then((response) => {
+                                setResult(result.concat(response.data))
+                                Swal.fire({
+                                    icon:'success',
+                                    title: 'new operation create successfully'
+                                })
+                            })
                         }else{
                             Swal.fire({
                                 icon:'error',

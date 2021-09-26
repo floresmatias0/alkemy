@@ -4,54 +4,12 @@ import { Link, useHistory } from 'react-router-dom';
 import logoAlkemy from '../assets/images/logo_labs.png';
 import styles from '../styles/Register.module.css';
 import Swal from 'sweetalert2';
+import axios from 'axios';
+import { variables } from '../helpers/environment/environment';
 
 const Register = () => {
     const history = useHistory();
     
-    const alertContents2 = () => {
-
-        if (http_request.readyState === 4) {
-            if (http_request.status === 201) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Great!',
-                    text: 'try log in now',
-                    confirmButtonText: 'Cool'
-                })
-                .then(result => {
-                    if(result.isConfirmed || result.isDismissed){
-                        history.push("/login")
-                    }
-                })
-            } else {
-                alert("Hubo un problema en la peticion")
-            }
-        }
-
-    }
-    
-    var http_request = false;
-
-    const postRegister = (url,user) => {
-        http_request = false;
-
-        if (window.XMLHttpRequest) { 
-            http_request = new XMLHttpRequest();
-            if (http_request.overrideMimeType) {
-                http_request.overrideMimeType('text/xml');
-            }
-        } 
-
-        if (!http_request) {
-            alert('Falla :( No es posible crear una instancia XMLHTTP');
-            return false;
-        }
-        http_request.onreadystatechange = alertContents2;
-        http_request.open('POST', url, true);
-        http_request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        http_request.send(`name=${user.name}&surname=${user.surname}&email=${user.email}&password=${user.password}&password_virtual=${user.password_virtual}`);
-    }
-
     return (
         <div className={styles.container}>
             <div className={styles.contentInfo}>
@@ -106,7 +64,34 @@ const Register = () => {
                     }}
                     onSubmit={(fields, { resetForm }) => {
                         resetForm();
-                        postRegister('http://localhost:3001/users/create',fields)
+                        let options = {
+                            "method" : "POST",
+                            "url" : `${variables.urlUser}/create`,
+                            "header" : {
+                                ContentType: "application/json"
+                            },
+                            "data" : {
+                                name: fields.name,
+                                surname: fields.surname,
+                                email: fields.email,
+                                password: fields.password,
+                                password_virtual: fields.password_virtual
+                            }
+                        }
+                        axios.request(options)
+                        .then(() => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Great!',
+                                text: 'try log in now',
+                                confirmButtonText: 'Cool'
+                            })
+                            .then(result => {
+                                if(result.isConfirmed || result.isDismissed){
+                                    history.push("/login")
+                                }
+                            })
+                        })
                     }}
                 >
                     {({ errors,touched }) => (

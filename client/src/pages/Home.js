@@ -1,15 +1,14 @@
 import React,{ useState, useEffect } from "react";
 
-import iconDelete from '../assets/images/delete.png';
-import iconEdit from '../assets/images/edit.png';
-
-import { connect } from 'react-redux';
 import { deleteOperation, getAllOperations, getOperationsFilter,putOperation } from "../store/operations/actions";
+import { connect } from 'react-redux';
 
-import { alertDeleteOperation, alertUpdateOperation } from "../helpers/Alerts/Alerts";
+import { alertDeleteOperation, alertUpdateOperation } from "../helpers/Alerts/alerts";
 import { parseJwt } from "../helpers/parseJwt/parseJwt";
 
 import TableContentLoader from '../components/Skeleton/TableContentLoader';
+import iconDelete from '../assets/images/delete.png';
+import iconEdit from '../assets/images/edit.png';
 import styles from '../styles/Home.module.css';
 
 const Home = ({OPERATIONS, LOADING, GETALL_OPERATIONS, FILTER_OPERATIONS, DELETE_OPERATION, UPDATE_OPERATION, USER}) => {

@@ -1,10 +1,12 @@
 import React,{ useState } from 'react';
-import styles from "../styles/Request.module.css";
-import Swal from 'sweetalert2';
+
 import { Formik, Form, Field } from 'formik';
-import { parseJwt } from '../helpers/parseJwt/parseJwt';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+
+import { parseJwt } from '../helpers/parseJwt/parseJwt';
 import { variables } from '../helpers/environment/environment';
+import styles from "../styles/Request.module.css";
 
 const Request = () => {
     

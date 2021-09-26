@@ -1,13 +1,16 @@
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import logoAlkemy from '../assets/images/logo_labs.png';
-import styles from '../styles/Login.module.css';
-import Swal from 'sweetalert2';
+
 import { Formik, Form, Field } from 'formik';
+import Swal from 'sweetalert2';
 import axios from 'axios';
+
 import { loginUser } from '../store/user/actions';
 import { connect } from 'react-redux';
+
 import { variables } from '../helpers/environment/environment';
+import logoAlkemy from '../assets/images/logo_labs.png';
+import styles from '../styles/Login.module.css';
 
 const Login = ({LOGIN}) => {
 

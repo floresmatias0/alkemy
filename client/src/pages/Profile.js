@@ -1,7 +1,9 @@
 import React,{ useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { connect } from 'react-redux';
+
 import { loginUser } from '../store/user/actions';
+import { connect } from 'react-redux';
+
 import { parseJwt } from '../helpers/parseJwt/parseJwt'
 import styles from '../styles/Profile.module.css';
 

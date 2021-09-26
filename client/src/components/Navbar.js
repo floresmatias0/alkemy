@@ -1,10 +1,13 @@
 import React,{ useState, useEffect } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import styles from '../styles/Nav.module.css';
+
+import { parseJwt } from '../helpers/parseJwt/parseJwt';
 import alkemyLogo from '../assets/images/logo-header.png';
 import menuFold from '../assets/images/menu.png';
+
 import { connect } from 'react-redux';
-import { parseJwt } from '../helpers/parseJwt/parseJwt';
+
+import styles from '../styles/Nav.module.css';
 
 const Navbar = ({USER}) => {
 

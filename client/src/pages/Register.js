@@ -1,11 +1,13 @@
 import React from 'react';
-import { Formik, Form, Field } from 'formik';
 import { Link, useHistory } from 'react-router-dom';
-import logoAlkemy from '../assets/images/logo_labs.png';
-import styles from '../styles/Register.module.css';
+
+import { Formik, Form, Field } from 'formik';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+
 import { variables } from '../helpers/environment/environment';
+import logoAlkemy from '../assets/images/logo_labs.png';
+import styles from '../styles/Register.module.css';
 
 const Register = () => {
     const history = useHistory();
